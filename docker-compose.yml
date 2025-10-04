@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # 後端服務
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ai-defense-backend
+    ports:
+      - "5001:5001"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=False
+    volumes:
+      # 模型文件掛載（需要根據實際路徑調整）
+      - ./models:/app/models:ro
+      # 上傳文件持久化
+      - backend_uploads:/app/uploads
+      - backend_results:/app/results
+    networks:
+      - ai-defense-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # 前端服務
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ai-defense-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - ai-defense-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
+
+  # Ollama 服務（可選，如果需要本地 LLM）
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ai-defense-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - ai-defense-network
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    # GPU 支援（如果有 NVIDIA GPU）
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+networks:
+  ai-defense-network:
+    driver: bridge
+    name: ai-defense-network
+
+volumes:
+  backend_uploads:
+    name: ai-defense-uploads
+  backend_results:
+    name: ai-defense-results
+  ollama_data:
+    name: ai-defense-ollama-data
