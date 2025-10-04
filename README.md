@@ -60,11 +60,11 @@ system_config = {
     "strict_mode": False
 }
 ```
-請把model_path改成toxigen_model放置的路徑
+#### 請把model_path改成toxigen_model放置的路徑
 
 toxigen_model downoload link: [LINK](https://drive.google.com/drive/folders/14uaWo6KFr4Agwti33J-8RLykP61mJOTw?usp=sharing)
 
-請下載llama_jailbreak_detector，並將整個資料夾和app.py放在同一層級
+#### 請下載llama_jailbreak_detector，並將整個資料夾和app.py放在同一層級
 
 llama_jailbreak_detector downoload link: [LINK](https://drive.google.com/drive/folders/19dCxaDrI_2tSibpmEb-_EqLo8zKQ9KYs?usp=sharing)
 
