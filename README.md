@@ -6,13 +6,14 @@
 ## 專案目錄結構
 
 ```
-security-defense-system/
+ai-defense-system/
 ├── backend/                     # Flask 後端
 │   ├── app.py
 │   ├── llama_jailbreak_detector/   # LLM model         
 │   ├── enhanced_defense_system.py
 │   ├── enhanced_llm_moderator.py
-│   ├── requirements.txt     
+│   ├── requirements.txt
+│   ├── requirements_local.txt     
 │   ├── uploads/             
 │   ├── static/               
 │   └── venv/                 
