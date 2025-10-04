@@ -11,6 +11,7 @@ security-defense-system/
 │   ├── app.py
 |   ├── llama_jailbreak_detector/   # LLM model         
 │   ├── enhanced_defense_system.py
+│   ├── enhanced_llm_moderator.py
 │   ├── requirements.txt     
 │   ├── uploads/             
 │   ├── static/               
